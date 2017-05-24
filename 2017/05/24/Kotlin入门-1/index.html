@@ -1,0 +1,423 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Vic7or,455036517@qq.com"><title>Kotlin入门 · Forever Young</title><meta name="description" content="Kotlin 基本语法介绍
+基本数据类型
+在Kotlin中，所有的东西都是一个对象，所以我们可以在任何变量上调用成员函数和属性。有一些类型是内置的，因为他们的实现经过了优化。但对于用户来说，他们看起来就像普通的类。在本节主要描述这些内置类型:numbers、booleans、arrays;
+Numb"><meta name="keywords" content="Hexo,java,php,html.Linux"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">Forever Young</a></h3><div class="description"><p>Nothing lasts forever.</p></div></div></div><ul class="social-links"><li><a href="http://github.com/https://github.com/mzenm"><i class="fa fa-github"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a onclick="window.history.go(-1)" class="fa fa-chevron-left"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Kotlin入门</a></h3></div><div class="post-content"><p>Kotlin 基本语法介绍</p>
+<p>基本数据类型</p>
+<p>在Kotlin中，所有的东西都是一个对象，所以我们可以在任何变量上调用成员函数和属性。有一些类型是内置的，因为他们的实现经过了优化。但对于用户来说，他们看起来就像普通的类。在本节主要描述这些内置类型:numbers、booleans、arrays;</p>
+<p>Numbers</p>
+<p>Kotlin适用于Java相似的方式来操作数字，但是并不完全一样。比如说，不存在针对数字的隐式扩展转换，有些字面上 也不太一样。Kotlin提供以下内置类型表示数字</p>
+<p>  Type      Bit width<br>  Double    64<br>  Float     32<br>  Long      64<br>  Int       32<br>  Short     16<br>  Byte      8        </p>
+<p>注意在Kotlin中characters 类型并不属于数字类型。</p>
+<p>字符常量</p>
+<p>对于整形有以下类型的字符常量</p>
+<ul>
+<li>十进制：123<ul>
+<li>Long型使用大写L标记：123L</li>
+</ul>
+</li>
+<li>16进制：0x0F</li>
+<li>二进制：0b00001011</li>
+</ul>
+<p>Note:不支持8进制</p>
+<p>Kotlin对浮点数也有方便的定义方式</p>
+<ul>
+<li>默认的Double: 123.5、123.5e10</li>
+<li>Float型使用f或F标记：123.5f</li>
+</ul>
+<p>在数字表示中使用下划线(从1.1开始)</p>
+<p>你可以使用下划线以确保数字变量具有更好的可读性</p>
+<pre><code>val oneMillion = 1_000_000
+val creditCardNumber = 1234_5678_9012_3456L
+val socialSecurityNumber = 999_99_9999L
+val hexBytes = 0xFF_EC_DE_5E
+val bytes = 0b11010010_01101001_10010100_10010010
+</code></pre><p>表示-包装</p>
+<p>在Java平台上，数字类型实际上被存储为JVM的基本数据类型，除非我们需要一个可以为null的数字引用或者作为泛型引用。在后面这种情况下，数字就会被包装。</p>
+<p>注意，数字类型的包装不必保护一致性。</p>
+<pre><code>val a: Int = 10000
+print(a === a) // Prints &apos;true&apos;
+val boxedA: Int? = a
+val anotherBoxedA: Int? = a
+print(boxedA === anotherBoxedA) // !!!Prints &apos;false&apos;!!!
+</code></pre><p>但是，另一方面包装保护对等性。</p>
+<pre><code>val a: Int = 10000
+print(a == a) // Prints &apos;true&apos;
+val boxedA: Int? = a
+val anotherBoxedA: Int? = a
+print(boxedA == anotherBoxedA) // Prints &apos;true&apos;
+</code></pre><p>显式转换</p>
+<p>由于不同的表现形式，小类型不是大类型的子类型。如果如，我们会在下列适用中遇到问题。</p>
+<pre><code>//虚构代码，不要实际运行:
+val a: Int? = 1 // 一个包装int型 (Java.lang.Integer)
+val b: Long? = a // 隐式的转化为Long项 (Java.lang.Long)
+print(a == b) // 打印&quot;false&quot;因为Long.equals()的方法也会检测long数据的其他部分
+</code></pre><p>所以，不只是一致性，甚至对等性也静静的消失掉了。</p>
+<pre><code>结论是，小类型不能隐式的转换为大类型。这就意味着，我们只有在使用显式转换的情况在，可以把一个Byte型的值赋值给Int型的变量:
+
+val b: Byte = 1 // OK, literals are checked statically
+val i: Int = b // ERROR
+</code></pre><p>我们可以使用显式转换为更宽类型的数字</p>
+<pre><code>val i: Int = b.toInt() // OK: explicitly widened
+</code></pre><p>每种数字类型都支持以下方式的转换操作</p>
+<ul>
+<li>toByte(): Byte</li>
+<li>toShort(): Short</li>
+<li>toInt(): Int</li>
+<li>toLong(): Long</li>
+<li>toFloat(): Float</li>
+<li>toDouble: Double</li>
+<li>toChar(): Char</li>
+</ul>
+<p>隐式的类型转换都很少被注意到，因为这种类型都是通过上下文推断得出，而在算数运算中类型也不自动被恰当的重载。</p>
+<pre><code>val l = 1L + 3 // Long + Int =&gt; Long
+</code></pre><p>运算</p>
+<p>Kotlin支持数字中标准的算数运算集合。这些运算集合被定义为对应类的成员发膜护发。但是编译器优化这些调用为对应的指定。</p>
+<p>对于按位运算，并没有提供特殊的运算符，但是提供了内嵌格式的函数来达到相似的调用效果，比如说：</p>
+<pre><code>val x = (1 shl 2) and 0x000FF000
+</code></pre><p>一下是位运算的完整类型（仅对Int和Long型可用）</p>
+<ul>
+<li>shl(bits) – signed shift left (Java’s &lt;&lt;)</li>
+<li>shl(bits) – signed shift left (Java’s &lt;&lt;)</li>
+<li>ushr(bits) – unsigned shift right (Java’s &gt;&gt;&gt;)</li>
+<li>and(bits) – bitwise and</li>
+<li>or(bits) – bitwise or</li>
+<li>xor(bits) – bitwise xor</li>
+<li>inv() – bitwise inversion</li>
+</ul>
+<p>Characters</p>
+<p>字符使用类型Char表示。字符型不能直接当做数字类型对待</p>
+<pre><code>fun check(c: Char) {
+    if (c == 1) { // ERROR: incompatible types
+        // ...
+    }
+}
+</code></pre><p>字符类型通过单引号’进行字面表示：’1’。特殊的字符可以使用反斜杠进行转义。支持下列转义顺序:\t, \b, \n, \r, \’, \”, \和 \$。为了转码其他字符，可以使用Unicode转义序列语法：’\uFF00’。</p>
+<p>我们可以显式把一个字符转化为Int型数字。</p>
+<pre><code>fun decimalDigitValue(c: Char): Int {
+    if (c !in &apos;0&apos;..&apos;9&apos;)
+        throw IllegalArgumentException(&quot;Out of range&quot;)
+    return c.toInt() - &apos;0&apos;.toInt() // Explicit conversions to numbers
+}
+</code></pre><p>跟数字 一样，需要时字符型也可以包装为一个可null的引用。在包装运算中不保证一致性。</p>
+<p>Boolean</p>
+<p>Boolean类型表示布尔值，布尔值只有两个:true和false;</p>
+<p>需要时布尔值也会被包装为一个可null得引用</p>
+<p>内置的布尔运算符包括：</p>
+<ul>
+<li>|| – lazy disjunction</li>
+<li>&amp;&amp; – lazy conjunction</li>
+<li>! - negation</li>
+</ul>
+<p>Array</p>
+<p>Kotlin中的数组用类Array来标示。Array类包含get和set函数（通过运算符重载协议转化为[]）和size属性。除此之外还有其他一些有用的成员函数：</p>
+<pre><code>class Array&lt;T&gt; private constructor() {
+    val size: Int
+    operator fun get(index: Int): T
+    operator fun set(index: Int, value: T): Unit
+
+    operator fun iterator(): Iterator&lt;T&gt;
+    // ...
+}
+</code></pre><p>为了创建一个数组，我们可以使用库函数arrayOf()，并向该函数传递一列值，这样arrayOf(1, 2, 3)就创建一个一个数组[1, 2, 3]。另外也可以使用arrayOfNulls()库函数创建填充了指定数量Null元素的数组。</p>
+<p>另一个选择是使用工厂方法，接受一个数组大小参数和一个可以根据指针返回对应数组元素初始化值得函数。</p>
+<pre><code>// Creates an Array&lt;String&gt; with values [&quot;0&quot;, &quot;1&quot;, &quot;4&quot;, &quot;9&quot;, &quot;16&quot;]
+val asc = Array(5, { i -&gt; (i * i).toString() })
+</code></pre><p>就如我上面所说，[]操作符表示调用成员函数get()和set();</p>
+<p>注意：与Java不同，Kotlin的数组是不可变的。这意味着在Kotlin中我们不能将Array<string>赋值给Array<any>,这可能会导致一个运行时错误。但是我们可以使用Array<out any="">。细节可以查看类型投影。</out></any></string></p>
+<p>Kotlin也提供了特殊的类以在不需要额外包装开销的情况下标示基础类型数组：ByteArray,ShortArray, IntArray 等。这些类与Array类不存在继承关系，但是具有与Array类相同的方法和属性集合。每个基础类数组也都有对应的工厂函数:</p>
+<pre><code>val x: IntArray = intArrayOf(1, 2, 3)
+x[0] = x[1] + x[2]
+</code></pre><p>Strings</p>
+<p>字符串使用类型String表示。字符串是不可变的。字符串的每一个元素都是一个字符，我们可以通过索引运算符$[i]来获取这些字符。一个字符串可以用for-loop结构来遍历字符。</p>
+<pre><code>for (c in str) {
+    println(c)
+}
+</code></pre><p>字符串的语言标示</p>
+<p>Kotlin有两种字符串的字面值：可能包含转义字符的转义字符串和包含换行和任意文本的原生字符串。转义字符串与Java字符串非常相似</p>
+<pre><code>val s = &quot;Hello, world!\n&quot;
+</code></pre><p>通过简单的\就能完成转义。可以查看上面关于字节的描述查看支持的转义序列。</p>
+<p>原生字符串使用三个双引号”””来限定，包含不进行转义的字符，且可以包含换行符和其他任何字符。</p>
+<pre><code>val text = &quot;&quot;&quot;
+    for (c in &quot;foo&quot;)
+        print(c)
+&quot;&quot;&quot;
+</code></pre><p>你可以使用 trimMargin() 函数来移除主要的空白符。</p>
+<pre><code>val text = &quot;&quot;&quot;
+    |Tell me and I forget.
+    |Teach me and I remember.
+    |Involve me and I learn.
+    |(Benjamin Franklin)
+    &quot;&quot;&quot;.trimMargin()
+</code></pre><p>默认上我们用|作为边界前缀，但是你可选择其他字符作为前缀，并作为参数传递，比如trimMargin(“&gt;”).</p>
+<p>字符串模板</p>
+<p>字符串可以包含模板表达式。比如一些可以求值的程序片段，他们的结果被嵌入到目标字符串中。一个模板表达式以一个$符开始，后面要么跟随一个简单变量名</p>
+<pre><code>val i = 10
+val s = &quot;i = $i&quot; // evaluates to &quot;i = 10&quot;
+</code></pre><p>要么跟随一个{}包裹的任意表达式</p>
+<pre><code>val s = &quot;abc&quot;
+val str = &quot;$s.length is ${s.length}&quot; // evaluates to &quot;abc.length is 3&quot;
+</code></pre><p>字符串末班在原声字符串和转移字符串中一样支持。如果你需要在一个原生字符产表示字符$(因为原生字符串不支持转义)。你可以使用以下的语法结构。</p>
+<pre><code>val price = &quot;&quot;&quot;
+${&apos;$&apos;}9.99
+&quot;&quot;&quot;
+</code></pre><p>Package</p>
+<p>一个原文源文件可以以包声明开始。</p>
+<pre><code>#创建一个Kt文件
+package basic.kotlin
+
+//变量声明
+var a:Int = 100;
+
+//函数声明
+fun baz():Boolean {
+    return true
+}
+//定义类
+class Goo {
+    var a:DataProviderManager = DataProviderManager
+    var b:A = A.B;
+    fun test():Int{
+        return 1;
+    }
+    class Doo{
+    }
+}
+
+//枚举类
+enum class A {
+    B,C,D,E;
+}
+
+//一种单例声明格式
+object DataProviderManager {
+    var a:String = &quot;test&quot;;
+    fun c(){}
+}
+</code></pre><p>这样，这个源文件中的所有内容都被包含在哪个被生命的包中。这样，在上面的例子中，函数baz()的全名应该是basic.kotlin.baz，类Goo的全名是basic.kotlin.Goo;</p>
+<p>如果未指定包名，这样一个文件的上下文都归属于一个没有名字的默认包。</p>
+<p>默认注入</p>
+<p>在任意一个Kotlin文件中，有一些包都会被默认注入：</p>
+<ul>
+<li>kotlin.*</li>
+<li>kotlin.annotation.*</li>
+<li>kotlin.collections.*</li>
+<li>kotlin.comparisons.*  (since 1.1)</li>
+<li>kotlin.io.*</li>
+<li>kotlin.ranges.*</li>
+<li>kotlin.sequences.*</li>
+<li>kotlin.text.*</li>
+</ul>
+<p>根据目标平台，还回引入其他额外的依赖包：</p>
+<ul>
+<li>JVM:    <ul>
+<li>java.lang.*</li>
+<li>kotlin.jvm.*</li>
+</ul>
+</li>
+<li>JS:    <ul>
+<li>kotlin.js.*</li>
+</ul>
+</li>
+</ul>
+<p>注入</p>
+<p>除了默认注入外，每一个文件还可以包含自己的注入指令。主语的语法规则被定义在语法部分.</p>
+<p>我们可以注入单个命名，比如：</p>
+<pre><code>import foo.Bar // Bar is now accessible without qualification
+</code></pre><p>或者注入一个范围内的所有可接入内容(包、类、对象等);</p>
+<pre><code>import foo.* // everything in &apos;foo&apos; becomes accessible
+</code></pre><p>如果存在命名冲突，我们可以使用as关键字在当前环境下重命名冲突实体来清除歧义。</p>
+<pre><code>import foo.Bar // Bar is accessible
+import bar.Bar as bBar // bBar stands for &apos;bar.Bar&apos;
+</code></pre><p>import关键字并不仅限于引入类，你也可以用它来引入其他声明：</p>
+<ul>
+<li>顶级函数和属性</li>
+<li>对象声明(单例声明)中的函数和属性</li>
+<li>枚举常量</li>
+</ul>
+<p>与Java不同，Kotlin并没有一个单独的import static语法；所有生命的引入都要使用常规的import 关键字。</p>
+<p>顶级对象的可见性声明</p>
+<p>如果一个顶级声明被标记为private,那么他对于声明他的文件而言是私有的(请看可视性修饰符)。</p>
+<pre><code>Kotlin可以像绝大多数面向对象语言一样，我们可以定义一个包，用来划分模块功能和防止重复命名。同样与绝大多数面向对象语言相同，Kotlin支持使用Import关键字引用类，用as关键字设置类在当前源文件中的名称。但是相比与Java相比，kotlin在引入以及文件系统上有非常大的不同。
+</code></pre><ol>
+<li>kotlin允许在源文件中，不必须建立与源文件名相同的类。实际上，这本是是一种良好的编程风格，大家依旧可以保持。</li>
+<li>kotlin允许用import方法包含对应包的类、顶层方法、顶层属性、声明在对象声明(一种单例声明方式)的属性和方法以及枚举常量。</li>
+<li><p>kotlin的import关键字可以使用as 关键词配合来定义引入的别名。</p>
+<p> //kotlin的引用方式<br> package basic.kotlin</p>
+<p> import basic.kotlin.*;<br> import basic.kotlin.DataProviderManager as DataMg<br> import basic.kotlin.DataProviderManager.a;<br> import basic.kotlin.DataProviderManager.c;<br> import basic.kotlin.a;<br> import basic.kotlin.A;<br> import basic.kotlin.Goo;<br> import basic.kotlin.Magic</p>
+<p> class Magic {<br> }</p>
+</li>
+</ol>
+<p>Function</p>
+<p>函数声明</p>
+<pre><code>kotlin使用fun关键字声明函数。
+</code></pre><ol>
+<li>标准函数定义<pre><code>fun sum(a: Int, b: Int): Int {
+    return a + b
+}
+</code></pre></li>
+<li>单行函数<pre><code>fun sum(a: Int, b: Int) = a + b
+</code></pre></li>
+<li>无返回值函数<pre><code>fun printSum(a: Int, b: Int): Unit {
+    println(&quot;sum of $a and $b is ${a + b}&quot;)
+}
+</code></pre>无返回值函数的Unit关键字可以忽略<pre><code>fun printSum(a: Int, b: Int) {
+    println(&quot;sum of $a and $b is ${a + b}&quot;)
+}
+</code></pre></li>
+</ol>
+<p>函数调用</p>
+<p>经典方式调用函数</p>
+<pre><code>val result = double(2)
+</code></pre><p>使用.dot调用成员方法</p>
+<pre><code>Sample().foo() //创建类Sample的实例并调用foo
+</code></pre><p>使用Infix 标识调用</p>
+<p>Infix 示意为 To fix in the mind; instill灌输注入</p>
+<p>中缀表达式（Infix notations ）就是用运算符连接起来有运算意义的式子</p>
+<p>最常见的中缀运算符包括+ - * / &gt; &lt; == !等</p>
+<p>函数在满足以下条件是，也可以使用Infix notations方式条用</p>
+<ul>
+<li>这些函数是成员函数或者扩展函数</li>
+<li>仅有一个参数</li>
+<li><p>被infix关键字标记</p>
+<p>  // 为Int定义扩展函数<br>  infix fun Int.shl(x: Int): Int {<br>  …<br>  }</p>
+<p>  //使用Infix方式调用函数</p>
+<p>  1 shl 2</p>
+<p>  //等同于使用</p>
+<p>  1.shl(2)</p>
+</li>
+</ul>
+<p>函数的形参</p>
+<pre><code>kotlin使用Pascal 标志定义形参，例如name: type，形参使用:分割形参名称和类型。每一个形参必须有明确的类型标示
+
+fun powerOf(number: Int, exponent: Int) {
+...
+}
+</code></pre><p>函数的默认实参</p>
+<pre><code>函数的形参可以有默认值。默认值在对应的形参被忽略时使用。这与其他语言相比，减少了override的次数。
+
+fun read(b: Array&lt;Byte&gt;, off: Int = 0, len: Int = b.size()) {
+...
+}
+</code></pre><p>默认值可以在目标值的类型后用=定义。</p>
+<pre><code>override方法总是使用与base方法（根方法，基础方法）相同的默认值形参值。当我们override一个方法时，默认的参数值必须从签名中忽略:
+
+open class A {
+    open fun foo(i: Int = 10) { ... }
+}
+
+class B : A() {
+    override fun foo(i: Int) { ... }  // no default value allowed
+}    
+</code></pre><p>具名实参</p>
+<p>当调用函数时，函数的形参可以被重命名。当一个函数有多个形参或者默认形参时，将会变得更加方便:</p>
+<pre><code>fun reformat(str: String,
+             normalizeCase: Boolean = true,
+             upperCaseFirstLetter: Boolean = true,
+             divideByCamelHumps: Boolean = false,
+             wordSeparator: Char = &apos; &apos;) {
+...
+}
+</code></pre><p>我们可以用默认实参来调用函数</p>
+<pre><code>reformat(str)
+</code></pre><p>然而，当我们不是用默认值来调用参数时，调用方式应该如下</p>
+<pre><code>reformat(str, true, true, false, &apos;_&apos;)
+</code></pre><p>使用被命名的实参可以让我们的代码更有可读性</p>
+<pre><code>reformat(str,
+    normalizeCase = true,
+    upperCaseFirstLetter = true,
+    divideByCamelHumps = false,
+    wordSeparator = &apos;_&apos;
+)
+</code></pre><p>而且如果我们不需要所有参数，我们还可以这样</p>
+<pre><code>reformat(str, wordSeparator = &apos;_&apos;)
+</code></pre><p>注意，在调用Java函数（方法时）,命名实参方式是不可用的，因为Java字节码文件并不总是保留函数参数的名称。</p>
+<p>单元返回参数</p>
+<p>如果一个函数不返回任何有用值，那么他的返回类型就是Unit;Unit是一种只能关联一个值Unit的类型。这个值不强制显式返回的。</p>
+<pre><code>fun printHello(name: String?): Unit {
+    if (name != null)
+        println(&quot;Hello ${name}&quot;)
+    else
+        println(&quot;Hi there!&quot;)
+    // `return Unit` or `return` is optional
+}
+</code></pre><p>函数签名中的Unit返回类型也是可选的，上面的代码也可以写成</p>
+<pre><code>fun printHello(name: String?) {
+    ...
+}
+</code></pre><p>行函数</p>
+<p>当一个函数只返回单一表达式时，花括号可以被省略，函数体可用用后置的a = symbol来表达</p>
+<pre><code>fun double(x: Int): Int = x * 2
+</code></pre><p>如果编译器可以推断返回值类型，那么返回值的显式声明也是可选的；</p>
+<pre><code>fun double(x: Int) = x * 2
+</code></pre><p>显式返回值类型</p>
+<pre><code>块函数必须显式的指定返回值得类型，除非函数计划返回Unit。这种情况下，是否显式指定是可选的。
+
+Kotlin并不会对块函数进行返回类型推断，因为这种函数通常在函数体内具有复杂的控制流，并且返回值的类型对于reader而言是不明显的，甚至有时对于编译器而言都是如此。
+</code></pre><p>可变数量的实参-Varargs</p>
+<p>一个函数的形参（通常是最后一个）可能会被vararg修饰符标记</p>
+<pre><code>fun &lt;T&gt; asList(vararg ts: T): List&lt;T&gt; {
+    val result = ArrayList&lt;T&gt;()
+    for (t in ts) // ts is an Array
+        result.add(t)
+    return result
+}
+</code></pre><p>这种情况下，允许响函数传递可变数量的实参。</p>
+<pre><code>val list = asList(1, 2, 3);
+</code></pre><p>在一个函数中，T类型的vararg参数可以视为T的数组，比如说，按上述案例中的ts变量具有Array<out t="">类型。</out></p>
+<pre><code>函数中，只有一个形参可以被标记为vararg。如果vararg形参不是形参列表的最后一个，那么后续形参的值，可以使用具名实参方式传递，或者，如果是函数类型的形参，可以用圆括号外的lambda来传递参数。
+
+当我们调用一个vararg函数式，我们可以逐一的传递参数，比如说asList(1,2,3) 。或者，如果我们已经有一个数组了，想要将数组的内容传递给这个函数，我们使用扩散运算符（使用*号作为数组的前缀）。
+
+val a = arrayOf(1, 2, 3)
+val list = asList(-1, 0, *a, 4)
+</code></pre><p>函数作用域</p>
+<p>在kotlin文件中，函数可以被声明为顶层项。这意味着你不需要向Java、C#或者Scala那样，创建一个类来持有一个函数。除了全局函数外，Kotlin函数也可以被声明为局部的，比如说成员函数和扩展函数。</p>
+<p>局部函数</p>
+<p>Kolin支持局部函数，比方说，在一个函数中创建另一个函数：</p>
+<pre><code>fun dfs(graph: Graph) {
+    fun dfs(current: Vertex, visited: Set&lt;Vertex&gt;) {
+        if (!visited.add(current)) return
+        for (v in current.neighbors)
+            dfs(v, visited)
+    }
+
+    dfs(graph.vertices[0], HashSet())
+}
+</code></pre><p>局部函数可以处理外层函数的局部变量，比如说闭包。所以在上面的案例中，visited可以使一个局部变量。</p>
+<pre><code>fun dfs(graph: Graph) {
+    val visited = HashSet&lt;Vertex&gt;()
+    fun dfs(current: Vertex) {
+        if (!visited.add(current)) return
+        for (v in current.neighbors)
+            dfs(v)
+    }
+
+    dfs(graph.vertices[0])
+}
+</code></pre><p>成员函数</p>
+<p>在一个类或者对象中定义的函数是一个成员函数。</p>
+<pre><code>class Sample() {
+    fun foo() { print(&quot;Foo&quot;) }
+}
+</code></pre><p>成员函数可以通过.来调用</p>
+<pre><code>Sample().foo() // creates instance of class Sample and calls foo
+</code></pre><p>泛型函数</p>
+<p>函数可以拥有泛型形参。这些形参必须在函数名前使用&lt;&gt;指明。</p>
+<p>单行函数</p>
+<p>扩展函数</p>
+<p>尾递归函数</p>
+<p>Kotlin支持一种称之为尾递归的函数式编程风格。他允许将通常写成循环的算法使用函数递归来替代，但是这种风格不会造成栈溢出风险。当一个函数被tailrec修饰符标记，并满足所需形式时，编译器就会丢弃快速高效的基于循环的版本，二区优化递归。</p>
+<pre><code>tailrec fun findFixPoint(x: Double = 1.0): Double
+        = if (x == Math.cos(x)) x else findFixPoint(Math.cos(x))
+</code></pre><p>上述代码用来计算余弦的不动点，这是一个数学常量。它仅仅从1.0开始重复的调用Math.cos函数知道结果不在发生改变位置，获得一个值为0.7390851332151607的结果。</p>
+<p>以上求解的代码完全等价于下面更为传统的风格：</p>
+<pre><code>private fun findFixPoint(): Double {
+    var x = 1.0
+    while (true) {
+        val y = Math.cos(x)
+        if (x == y) return y
+        x = y
+    }
+}
+</code></pre><p>为了适用talrec修饰符，一个函数必须在它执行的最后调用自身。如果在递归调用之后还有其他代码，你就不能使用尾递归，并且你不能在try/catch/finally块中使用尾递归。当前版本，尾递归仅在JVM后端中支持使用。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2017-05-24</span><i class="fa fa-tag"></i><a href="/categories/Kotlin/" title="Kotlin" class="tag">Kotlin </a></div></div></div></div><div class="share"><div class="evernote"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></div><div class="weibo"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></div><div class="twitter"><a href="http://twitter.com/home?status=,http://yoursite.com/2017/05/24/Kotlin入门-1/,Forever Young,Kotlin入门,;" class="fa fa-twitter"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a role="navigation" href="/2017/05/24/异步IO策略/" title="异步IO策略" class="btn">上一篇</a></li><li class="next pagbuttons"><a role="navigation" href="/2017/05/22/进程、线程、协程/" title="进程、线程、协程" class="btn">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
